@@ -1,30 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Chat Form</title>
+    <title>Chat GPT Style</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .chat-container {
+            width: 400px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 500px;
+            overflow-y: scroll;
+        }
+        .message {
+            background-color: #f1f0f0;
+            border-radius: 10px;
+            padding: 8px;
+            margin: 5px 0;
+        }
+        .user-message {
+            text-align: right;
+            background-color: #f7e6ff;
+        }
+        .bot-message {
+            text-align: left;
+        }
+        .input-container {
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Create Chat</h1>
-    <form action="/create" method="post">
-        <label for="user">User:</label>
-        <input type="text" id="user" name="user" required><br>
+    <h1>Chat with AI</h1>
+    <div class="chat-container" id="chatContainer">
+        <!-- Chat messages will be displayed here -->
+        <div class="message bot-message">Hello! How can I assist you today?</div>
+    </div>
+    <div class="input-container">
+        <input type="text" id="userInput" placeholder="Type your message..." onkeydown="sendMessage(event)">
+    </div>
 
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
+    <script>
+        // JavaScript function to send and display messages
+        function sendMessage(event) {
+            if (event.keyCode === 13) {
+                const userInput = document.getElementById("userInput");
+                const message = userInput.value.trim();
+                if (message !== "") {
+                    // Display user message
+                    const chatContainer = document.getElementById("chatContainer");
+                    const userMessage = document.createElement("div");
+                    userMessage.classList.add("message", "user-message");
+                    userMessage.textContent = message;
+                    chatContainer.appendChild(userMessage);
 
-        <label for="short_desc">Short Description:</label>
-        <input type="text" id="short_desc" name="short_desc" required><br>
+                    // Clear user input
+                    userInput.value = "";
 
-        <label for="long_desc">Long Description:</label>
-        <textarea id="long_desc" name="long_desc" required></textarea><br>
+                    // Send user message to server (you can use AJAX or WebSockets here)
 
-        <label for="alias">Alias:</label>
-        <input type="text" id="alias" name="alias" required><br>
+                    // In this example, we'll display a dummy bot response after a short delay
+                    setTimeout(function() {
+                        const botResponse = "I'm just a demo bot. You said: '" + message + "'";
+                        const botMessage = document.createElement("div");
+                        botMessage.classList.add("message", "bot-message");
+                        botMessage.textContent = botResponse;
+                        chatContainer.appendChild(botMessage);
 
-        <label for="origin">Origin:</label>
-        <input type="text" id="origin" name="origin" required><br>
-
-        <input type="submit" value="Create">
-    </form>
+                        // Scroll to the bottom of the chat container
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    }, 500);
+                }
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request, json
-from service.chat import create_chat, load_chats
+from service.chat import create_chat, load_chats, get_chat
+import uuid
 
 app = Flask(__name__)
 
@@ -13,7 +14,8 @@ def home():
 
 @app.route('/chat/<id>')
 def chat(id):
-    return render_template('chat.html', id=id)
+    data = get_chat(id=id)
+    return render_template('chat.html', id=data)
 
 @app.route("/create", methods=['GET'])
 def create():
@@ -28,10 +30,12 @@ def create_backbone():
     long_desc = request.form['long_desc']
     alias = request.form['alias']
     origin = request.form['origin']
+    uui = uuid.uuid1()
+    id = uui.hex
         
-    create_chat(user=user, name=name, short_desc=short_desc, long_desc=long_desc, alias=alias, origin=origin)
+    create_chat(user=user, name=name, short_desc=short_desc, long_desc=long_desc, alias=alias, origin=origin, id=id)
         
-    return redirect('/home')
+    return redirect('/chat/'+id)
 
 
 app.run(debug=True)
