@@ -50,36 +50,43 @@
     </div>
 
     <script>
-        // JavaScript function to send and display messages
+        function displayMessage(message, isUser) {
+            const chatContainer = document.getElementById("chatContainer");
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("message");
+            messageDiv.classList.add(isUser ? "user-message" : "bot-message");
+            messageDiv.textContent = message;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
         function sendMessage(event) {
-            if (event.keyCode === 13) {
+            if (event.key === "Enter") {
                 const userInput = document.getElementById("userInput");
-                const message = userInput.value.trim();
-                if (message !== "") {
-                    // Display user message
-                    const chatContainer = document.getElementById("chatContainer");
-                    const userMessage = document.createElement("div");
-                    userMessage.classList.add("message", "user-message");
-                    userMessage.textContent = message;
-                    chatContainer.appendChild(userMessage);
+                const message = userInput.value;
+                displayMessage("You: " + message, true);
+                userInput.value = "";
 
-                    // Clear user input
-                    userInput.value = "";
-
-                    // Send user message to server (you can use AJAX or WebSockets here)
-
-                    // In this example, we'll display a dummy bot response after a short delay
-                    setTimeout(function() {
-                        const botResponse = "I'm just a demo bot. You said: '" + message + "'";
-                        const botMessage = document.createElement("div");
-                        botMessage.classList.add("message", "bot-message");
-                        botMessage.textContent = botResponse;
-                        chatContainer.appendChild(botMessage);
-
-                        // Scroll to the bottom of the chat container
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
-                    }, 500);
-                }
+                // Send message to the backend and get the response
+                fetch("/get_response", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ text: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if ("response" in data) {
+                        const botResponse = data.response;
+                        displayMessage("Bot: " + botResponse, false);
+                    } else {
+                        console.error("Error:", data.response);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
             }
         }
     </script>
