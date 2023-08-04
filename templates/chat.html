@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Chat Form</title>
+</head>
+<body>
+    <h1>Create Chat</h1>
+    <form action="/create" method="post">
+        <label for="user">User:</label>
+        <input type="text" id="user" name="user" required><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="short_desc">Short Description:</label>
+        <input type="text" id="short_desc" name="short_desc" required><br>
+
+        <label for="long_desc">Long Description:</label>
+        <textarea id="long_desc" name="long_desc" required></textarea><br>
+
+        <label for="alias">Alias:</label>
+        <input type="text" id="alias" name="alias" required><br>
+
+        <label for="origin">Origin:</label>
+        <input type="text" id="origin" name="origin" required><br>
+
+        <input type="submit" value="Create">
+    </form>
+</body>
+</html>
