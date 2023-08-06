@@ -66,7 +66,7 @@
                 const message = userInput.value;
                 displayMessage("You: " + message, true);
                 userInput.value = "";
-
+    
                 // Send message to the backend and get the response
                 fetch("/get_response", {
                     method: "POST",

@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, request, json
 from service.chat import create_chat, load_chats, get_chat
 import uuid
 import requests
+from llm.rika import Rika 
+from llm.Rikav2 import Rikav2
 
 app = Flask(__name__)
 
@@ -42,31 +44,15 @@ def create_backbone():
 def get_response():
     data = request.get_json()
     user_message = data["text"]
+    print(user_message)
 
-    # Send the user's message to the external AI chatbot API
-    url = "https://waifu4all.meetsonawane.repl.co/api/mai"
-    response = requests.post(url, json={"text": user_message})
+    # Call your AI model here to generate the bot response
+    response = Rikav2(query=user_message)
     
     print(response)
 
-    try:
-        response.raise_for_status()  # Check for HTTP errors
-        if response.text.strip():  # Check if the response body is not empty
-            result = response.json()
-            if "response" in result:
-                bot_response = result["response"]
-                return json.dumps({"response": bot_response}), 200
-            else:
-                return json.dumps({"response": "Error: Invalid response format from the API"}), 500
-        else:
-            return json.dumps({"response": "Error: Empty response from the API"}), 500
-    except requests.exceptions.HTTPError as http_err:
-        return json.dumps({"response": f"HTTP error occurred: {http_err}"}), 500
-    except requests.exceptions.RequestException as req_err:
-        return json.dumps({"response": f"Request error occurred: {req_err}"}), 500
-    except requests.exceptions.JSONDecodeError:
-        return json.dumps({"response": "Error: Invalid JSON response from the API"}), 500
-    except KeyError:
-        return json.dumps({"response": "Error: Unexpected response format from the API"}), 500
-
+    return json.dumps({"response": response})
+    
+    
 app.run(debug=True)
+
