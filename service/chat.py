@@ -1,7 +1,7 @@
 import json
 import uuid
 
-def create_chat(user, name, short_desc, long_desc, alias, origin, id):
+def create_chat(user, name, short_desc, long_desc, scenario, origin, id, chat, image):
     
     with open("data.json", "a") as file:  # Use "a" mode to append to the file
         post = {
@@ -9,9 +9,11 @@ def create_chat(user, name, short_desc, long_desc, alias, origin, id):
             'name': name,
             'short_desc': short_desc,
             'long_desc': long_desc,
-            'alias': alias,
+            'dialouge': scenario,
             'origin': origin,
-            'id': id
+            'id': id,
+            'chat':chat,
+            'image':image
         }
         
         json.dump(post, file)

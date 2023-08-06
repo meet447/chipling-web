@@ -4,15 +4,22 @@
     <title>Chat GPT Style</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
         .chat-container {
-            width: 400px;
-            margin: 0 auto;
+            max-width: 2200px; /* Adjust the width as needed */
+            width: 90%; /* Set a percentage of the available width */
+            margin: 20px auto;
             border: 1px solid #ccc;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            height: 700px; /* Adjust the height as needed */
+            border-radius: 8px;
             padding: 10px;
-            height: 500px;
-            overflow-y: scroll;
         }
         .message {
             background-color: #f1f0f0;
@@ -26,7 +33,7 @@
         }
         .bot-message {
             text-align: left;
-        }
+        }   
         .input-container {
             margin-top: 10px;
         }
@@ -34,13 +41,57 @@
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: none;
+            background-color: #f4f4f4;
             border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+        .chat-container::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .appbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .appbar h2 {
+            margin: 0;
+        }
+
+        .appbar button {
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #fff;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <h1>Chat with AI</h1>
+    <div class="appbar">
+        <h2>You are Chatting with {{id[0].name}}</h2>
+        <a href="/">
+            <button>Home</button>
+        </a>
+        <!-- Create button -->
+        <a href="/create">
+            <button>Create</button>
+        </a>
+    </div>
+    <h1>{{id[0].long_desc}}</h1>
     <div class="chat-container" id="chatContainer">
         <!-- Chat messages will be displayed here -->
         <div class="message bot-message">Hello! How can I assist you today?</div>
@@ -60,31 +111,57 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        function showLoading() {
+            displayMessage("Char is typing...", false);
+        }
+
+        function hideLoading() {
+            const loadingMessage = document.querySelector(".bot-message:last-child");
+            if (loadingMessage && loadingMessage.textContent === "Bot is typing...") {
+                loadingMessage.remove();
+            }
+        }
+
         function sendMessage(event) {
             if (event.key === "Enter") {
                 const userInput = document.getElementById("userInput");
                 const message = userInput.value;
+                const url = window.location.href; // Get the current URL
+
+                // Extract the desired part from the URL
+                const urlParts = url.split("/");
+                const desiredPart = urlParts[urlParts.length - 1];
+
                 displayMessage("You: " + message, true);
-                userInput.value = "";
-    
+                userInput.value = message;
+
+                const data = {
+                    text: message,
+                    id: desiredPart,
+                };
+
+                showLoading();
+
                 // Send message to the backend and get the response
                 fetch("/get_response", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json"  
                     },
-                    body: JSON.stringify({ text: message })
+                    body: JSON.stringify(data)
                 })
                 .then(response => response.json())
                 .then(data => {
+                    hideLoading();
                     if ("response" in data) {
                         const botResponse = data.response;
-                        displayMessage("Bot: " + botResponse, false);
+                        displayMessage("Char: " + botResponse, false);
                     } else {
                         console.error("Error:", data.response);
                     }
                 })
                 .catch(error => {
+                    hideLoading();
                     console.error("Error:", error);
                 });
             }

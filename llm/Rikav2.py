@@ -31,6 +31,10 @@ def Rikav2(query):
     response = requests.post(url, json=payload, headers=headers)
 
     print(f"Status Code: {response.status_code}")
-    answer = f"Response: {response.json()}"
+    answer = response.json()
     
-    return answer
+    print(answer)
+    
+    res = answer[0]['generated_text']
+    
+    return res

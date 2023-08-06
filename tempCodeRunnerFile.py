@@ -14,8 +14,7 @@ def index():
 
 @app.route('/home')
 def home():
-    data = load_chats()
-    return render_template('home.html', data=data)
+    return render_template('home.html')
 
 @app.route('/chat/<id>')
 def chat(id):
@@ -33,14 +32,12 @@ def create_backbone():
     name = request.form['name']
     short_desc = request.form['short_desc']
     long_desc = request.form['long_desc']
-    scenario = request.form['scenario']
+    alias = request.form['alias']
     origin = request.form['origin']
-    chat = request.form['chat']
-    image = request.form['image']
     uui = uuid.uuid1()
     id = uui.hex
         
-    create_chat(user=user, name=name, chat=chat, short_desc=short_desc, long_desc=long_desc, scenario=scenario, origin=origin, id=id, image=image)
+    create_chat(user=user, name=name, short_desc=short_desc, long_desc=long_desc, alias=alias, origin=origin, id=id)
         
     return redirect('/chat/'+id)
 

@@ -1,2 +1,57 @@
-<head>Hello</head>
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chat Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .character-card {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .character-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .character-card p {
+            margin-bottom: 10px;
+            color: #777;
+        }
+        .character-card a {
+            display: block;
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to AI Chat!</h1>
+    <div>
+        <!-- Loop through the characters and display them as cards -->
+        {% for character in data %}
+        <div class="character-card">
+            <h2>{{ character.name }}</h2>
+            <p>{{ character.short_desc }}</p>
+            <a href="/chat/{{ character.id }}">Chat with {{ character.name }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
