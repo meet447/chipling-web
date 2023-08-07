@@ -1,53 +1,109 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Chat Home Page</title>
+    <title>GPT Chat Home Page</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
             margin: 0;
             padding: 0;
         }
-        h1 {
+        header {
+            background-color: #202020;
+            color: #fff;
+            padding: 10px;
             text-align: center;
-            margin-top: 20px;
+        }
+        h1 {
+            margin: 20px 0;
+            color: #202020;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
         .character-card {
-            max-width: 600px;
-            margin: 20px auto;
+            flex-basis: calc(33.33% - 20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
         .character-card h2 {
             margin-top: 0;
-            color: #333;
+            color: #202020;
         }
         .character-card p {
             margin-bottom: 10px;
             color: #777;
+            text-align: center;
+        }
+        .character-card img {
+            max-width: 100%;
+            border-radius: 4px;
+            margin-bottom: 10px;
         }
         .character-card a {
             display: block;
             text-align: center;
-            background-color: #333;
+            background-color: #202020;
             color: #fff;
             padding: 10px 20px;
             font-size: 16px;
             text-decoration: none;
             border-radius: 5px;
         }
+        .app-bar {
+            background-color: #202020;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+        .app-bar input[type="text"] {
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            color: #202020;
+            background-color: #f7f7f7;
+            text-align: center;
+        }
+        .app-bar button {
+            background-color: #fff;
+            color: #202020;
+            border: none;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to AI Chat!</h1>
-    <div>
+    <header class="app-bar">
+        <h1>Rika.Ai</h1>
+        <input type="text" placeholder="Search...">
+        <a href="/create">
+        <button>Create</button>
+        </a>
+
+    </header>
+    <div class="container">
         <!-- Loop through the characters and display them as cards -->
         {% for character in data %}
         <div class="character-card">
             <h2>{{ character.name }}</h2>
+            <img src="{{character.image}}" alt="thumbnail">
             <p>{{ character.short_desc }}</p>
             <a href="/chat/{{ character.id }}">Chat with {{ character.name }}</a>
         </div>

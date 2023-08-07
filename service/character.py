@@ -12,6 +12,6 @@ def character_builder(name, description, scenario, chat):
     
     chat = f"{chat}"
     
-    prompt = system_instrucions + char_description + char_description + scenario + chat
+    prompt = system_instrucions + char_description + scenario + chat
     
     return prompt

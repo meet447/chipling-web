@@ -58,9 +58,8 @@ def get_response():
     
     name = details[0]["name"]
     desc = details[0]["long_desc"]
-    
-    scenario = "Her office, in the Public Safety building. . . <Start> \n"
-    chat = "{{char}}: *you enter her office, she looks at you*\n\n\"Who are you?\"\n{{user}}:"
+    scenario = details[0]["dialouge"]
+    chat = details[0]["chat"]
 
     print(user_message)
     print(name)
