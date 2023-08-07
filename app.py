@@ -17,10 +17,20 @@ def home():
     data = load_chats()
     return render_template('home.html', data=data)
 
+@app.route('/status')
+def status():
+    data = load_chats()
+    return render_template('status.html', data=data)
+
 @app.route('/chat/<id>')
 def chat(id):
     data = get_chat(id=id)
     return render_template('chat.html', id=data)
+
+@app.route("/info/<id>")
+def info_page(id):
+    data = get_chat(id=id)
+    return render_template('info.html', data=data)
 
 @app.route("/create", methods=['GET'])
 def create():
@@ -49,24 +59,15 @@ def get_response():
     data = request.get_json()
     user_message = data["text"]
     id = data["id"]
-    
-    print(data)
-    
+        
     details = get_chat(id=id)
-    
-    print(details)
-    
+        
     name = details[0]["name"]
     desc = details[0]["long_desc"]
     scenario = details[0]["dialouge"]
     chat = details[0]["chat"]
 
-    print(user_message)
-    print(name)
-    print(desc)
-    
     prompt = character_builder(name=name, description=desc, chat=chat, scenario=scenario)
-
 
     # Call your AI model here to generate the bot response
     response = Rikav2(query=prompt + user_message + "\n{{char}}:")
@@ -76,5 +77,5 @@ def get_response():
     return json.dumps({"response": response})
     
     
-app.run(debug=True)
+app.run(debug=True, host="0.0.0.0")
 

@@ -1,61 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chat GPT Style</title>
+    <title>Rika Chat</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            color: #333;
         }
+
+        /* Dark mode */
+        body.dark-mode {
+            background-color: #333;
+            color: #f4f4f4;
+        }
+
         .chat-container {
-            max-width: 2200px; /* Adjust the width as needed */
-            width: 90%; /* Set a percentage of the available width */
+            max-width: 1500px;
+            width: 90%;
             margin: 20px auto;
             border: 1px solid #ccc;
             background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            height: 700px; /* Adjust the height as needed */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 700px;
+            overflow-y: auto;
         }
+
+        .message-container {
+            display: flex;
+            gap: 10px;
+        }
+
         .message {
-            background-color: #f1f0f0;
-            border-radius: 10px;
-            padding: 8px;
-            margin: 5px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .user-message {
-            text-align: right;
-            background-color: #f7e6ff;
+            background-color: #77aaff;
+            color: #fff;
+            align-self: flex-end;
         }
+
         .bot-message {
-            text-align: left;
+            background-color: #f1f0f0;
+            color: #333;
+            align-self: flex-start;
         }   
+
         .input-container {
-            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
+
+        /* Adjusted input size */
         input[type="text"] {
-            width: 100%;
+            flex: 1;
             padding: 10px;
             font-size: 16px;
             border: none;
-            background-color: #f4f4f4;
-            border-radius: 5px;
+            background-color: #f1f0f0;
+            border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
         }
+
+        .enter-button {
+            padding: 10px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #77aaff;
+            color: #fff;
+        }
+
         h1 {
             text-align: center;
             margin-top: 30px;
-            color: #333;
         }
+
         .chat-container::after {
             content: "";
             display: table;
             clear: both;
         }
+
         .appbar {
             background-color: #333;
             color: #fff;
@@ -73,10 +112,24 @@
             padding: 8px 16px;
             font-size: 16px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             background-color: #fff;
             color: #333;
+        }
+
+        /* Dark mode button */
+        .dark-mode-button {
+            background-color: #1a1a1a;
+            color: #f4f4f4;
+        }
+
+        /* Hover effect for buttons */
+        .appbar button:hover,
+        .start-chatting-btn:hover,
+        .enter-button:hover,
+        .dark-mode-button:hover {
+            background-color: #e3e3e3;
         }
     </style>
 </head>
@@ -90,23 +143,28 @@
         <a href="/create">
             <button>Create</button>
         </a>
+        <!-- Dark mode button -->
+        <button id="darkModeButton" class="dark-mode-button">Dark Mode</button>
     </div>
-    <h1>{{id[0].long_desc}}</h1>
     <div class="chat-container" id="chatContainer">
         <!-- Chat messages will be displayed here -->
-        <div class="message bot-message">Hello! How can I assist you today?</div>
+        <div class="message-container">
+            <div class="message bot-message">{{id[0].chat}}</div>
+        </div>
     </div>
     <div class="input-container">
         <input type="text" id="userInput" placeholder="Type your message..." onkeydown="sendMessage(event)">
+        <button class="enter-button" onclick="sendMessageButtonClick()">Send</button>
     </div>
 
     <script>
+        let isDarkMode = false;
+
         function displayMessage(message, isUser) {
             const chatContainer = document.getElementById("chatContainer");
             const messageDiv = document.createElement("div");
-            messageDiv.classList.add("message");
-            messageDiv.classList.add(isUser ? "user-message" : "bot-message");
-            messageDiv.textContent = message;
+            messageDiv.classList.add("message-container");
+            messageDiv.innerHTML = `<div class="message ${isUser ? 'user-message' : 'bot-message'}">${message}</div>`;
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -117,55 +175,71 @@
 
         function hideLoading() {
             const loadingMessage = document.querySelector(".bot-message:last-child");
-            if (loadingMessage && loadingMessage.textContent === "Bot is typing...") {
-                loadingMessage.remove();
+            if (loadingMessage && loadingMessage.textContent === "Char is typing...") {
+                loadingMessage.parentElement.remove();
             }
         }
 
         function sendMessage(event) {
             if (event.key === "Enter") {
-                const userInput = document.getElementById("userInput");
-                const message = userInput.value;
-                const url = window.location.href; // Get the current URL
-
-                // Extract the desired part from the URL
-                const urlParts = url.split("/");
-                const desiredPart = urlParts[urlParts.length - 1];
-
-                displayMessage("You: " + message, true);
-                userInput.value = message;
-
-                const data = {
-                    text: message,
-                    id: desiredPart,
-                };
-
-                showLoading();
-
-                // Send message to the backend and get the response
-                fetch("/get_response", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"  
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    hideLoading();
-                    if ("response" in data) {
-                        const botResponse = data.response;
-                        displayMessage("Char: " + botResponse, false);
-                    } else {
-                        console.error("Error:", data.response);
-                    }
-                })
-                .catch(error => {
-                    hideLoading();
-                    console.error("Error:", error);
-                });
+                sendMessageButtonClick();
             }
         }
+
+        function sendMessageButtonClick() {
+            const userInput = document.getElementById("userInput");
+            const message = userInput.value;
+            const url = window.location.href; // Get the current URL
+
+            // Extract the desired part from the URL
+            const urlParts = url.split("/");
+            const desiredPart = urlParts[urlParts.length - 1];
+
+            displayMessage("You: " + message, true);
+            userInput.value = message;
+
+            const data = {
+                text: message,
+                id: desiredPart,
+            };
+
+            showLoading();
+
+            // Send message to the backend and get the response
+            fetch("/get_response", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"  
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoading();
+                if ("response" in data) {
+                    const botResponse = data.response;
+                    displayMessage("Char: " + botResponse, false);
+                } else {
+                    console.error("Error:", data.response);
+                }
+            })
+            .catch(error => {
+                hideLoading();
+                console.error("Error:", error);
+            });
+        }
+
+        // Attach event listener to the dark mode button
+        const darkModeButton = document.getElementById("darkModeButton");
+        darkModeButton.addEventListener("click", () => {
+            const body = document.body;
+            isDarkMode = !isDarkMode;
+            if (isDarkMode) {
+                body.classList.add("dark-mode");
+            } else {
+                body.classList.remove("dark-mode");
+            }
+        });
     </script>
 </body>
 </html>
