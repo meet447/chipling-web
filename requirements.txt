@@ -1,0 +1,5 @@
+flask
+requests
+json
+hugchat_api #unofficial wrapper for higging chat
+flet #database gui
