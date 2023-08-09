@@ -1,9 +1,11 @@
-from flask import Flask, render_template, redirect, request, json
+from flask import Flask, render_template, redirect, request, json, jsonify
 from service.chat import create_chat, load_chats, get_chat
 import uuid, requests, json
 from llm.rika import Rika 
 from llm.Rikav2 import Rikav2
 from service.character import character_builder
+from api.backend import homepage_api,rikadel_api, rikav1_api,rikav2_api
+from api.service import process_prompt
 
 app = Flask(__name__)
 
@@ -81,9 +83,34 @@ def get_response():
 def api():
     return "API WORKING"
 
-@app.route('/api/rikav1')
+@app.route('/api/rikav1', methods=['POST'])
 def rikav1():
-    return
+    data = request.json
+    
+    text = data['text']
+    
+    id = data['id']
+    
+    prompt = process_prompt(id=id)
+    
+    response = rikav1_api(query=prompt + text + "\n{{char}}:")
+
+    return jsonify({'results': response})
+
+@app.route('/api/rikav2')
+def rikav2():
+    data = request.json
+    
+    text = data['text']
+    
+    id = data['id']
+    
+    prompt = process_prompt(id=id)
+    
+    response = rikav2_api(query=prompt + text + "\n{{char}}:")
+    
+    return jsonify({'results': response})
+
     
 app.run(debug=True, host="0.0.0.0")
 
