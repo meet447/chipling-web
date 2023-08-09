@@ -15,3 +15,15 @@ def character_builder(name, description, scenario, chat):
     prompt = system_instrucions + char_description + scenario + chat
     
     return prompt
+
+
+def search_character(name):
+    
+    result = []
+    
+    with "data.json" as file:
+        for line in file:
+            if line['name'] == name:
+                result.append(line)
+            else:
+                result.append('result not found!')

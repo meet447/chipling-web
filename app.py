@@ -19,8 +19,7 @@ def home():
 
 @app.route('/status')
 def status():
-    data = load_chats()
-    return render_template('status.html', data=data)
+    return render_template('status.html')
 
 @app.route('/chat/<id>')
 def chat(id):
