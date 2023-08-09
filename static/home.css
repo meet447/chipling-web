@@ -1,0 +1,130 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #202020;
+    color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #1a1a1a;
+    color: #f7f7f7;
+    padding: 10px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.logo {
+    font-size: 24px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.character-card {
+    flex-basis: calc(33.33% - 20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+}
+
+.character-card h2 {
+    margin-top: 0;
+    color: #f7f7f7;
+    font-size: 24px;
+}
+
+.character-card p {
+    margin-bottom: 10px;
+    color: #ccc;
+    text-align: center;
+}
+
+.character-card img {
+    max-width: 100%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.character-card a {
+    display: block;
+    text-align: center;
+    background-color: #1a1a1a;
+    color: #f7f7f7;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 1px solid #f7f7f7;
+}
+
+.character-card a:hover {
+    background-color: #f7f7f7;
+    color: #1a1a1a;
+}
+
+.app-bar {
+    background-color: #1a1a1a;
+    color: #f7f7f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.app-bar input[type="text"] {
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    color: #f7f7f7;
+    background-color: #1a1a1a;
+    text-align: center;
+    width: 250px;
+    margin-right: 10px;
+}
+
+.app-bar button {
+    background-color: #f7f7f7;
+    color: #1a1a1a;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    .character-card {
+        flex-basis: calc(50% - 20px);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .character-card {
+        flex-basis: 100%;
+    }
+}

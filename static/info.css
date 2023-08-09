@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #202020;
+    color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #77aaff;
+    color: white;
+}
+
+.profile {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #1a1a1a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.profile img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+    max-width: 200px;
+}
+
+.profile h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #f7f7f7;
+}
+
+.profile p {
+    text-align: justify;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+.profile .quote {
+    font-style: italic;
+    color: #777;
+}
+
+.dialogue {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    color: #f7f7f7;
+}
+
+.dialogue p {
+    margin-bottom: 10px;
+}
+
+.dialogue .user {
+    font-weight: bold;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.start-chatting-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #77aaff;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.start-chatting-btn:hover {
+    background-color: #6699cc;
+}
+
+.appbar {
+    background-color: #1a1a1a;
+    color: #f7f7f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.appbar input[type="text"] {
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    color: #f7f7f7;
+    background-color: #333;
+    text-align: center;
+}
+
+.appbar button {
+    background-color: #f7f7f7;
+    color: #202020;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+}
