@@ -111,6 +111,16 @@ def rikav2():
     
     return jsonify({'results': response})
 
+@app.route('/api/rikadel')
+def rikadel():
     
+    data = request.json
+    
+    text = data['text']
+    
+    response = rikadel_api(query=text)
+    
+    return jsonify({'results': response})
+
 app.run(debug=True, host="0.0.0.0")
 
