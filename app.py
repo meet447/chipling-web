@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, request, json
 from service.chat import create_chat, load_chats, get_chat
-import uuid
-import requests
+import uuid, requests, json
 from llm.rika import Rika 
 from llm.Rikav2 import Rikav2
 from service.character import character_builder
@@ -74,7 +73,17 @@ def get_response():
     print(response)
 
     return json.dumps({"response": response})
+
+
+################################################AAAAAAAAAAAAAAPPPPPPPPPPPPPPPPIIIIIIII###########################################
     
+@app.route('/api')
+def api():
+    return "API WORKING"
+
+@app.route('/api/rikav1')
+def rikav1():
+    return
     
 app.run(debug=True, host="0.0.0.0")
 
