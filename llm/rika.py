@@ -1,11 +1,12 @@
 import os, time
 from hugchat_api import HuggingChat
+from config import hf_key, token, email
 
-EMAIL = "maousenpai48@gmail.com"
+EMAIL = email
 
 # create ThreadPool
 
-cookies = {"hf-chat": "cc5f1ad7-1c94-42f8-9a20-3fcd438128f6", "token": "VmnhTWlgpZrjwcrnbalvFuCwiwBfDfIpEutEVpUzrPUXkaapClPPhnScKasYZaFvnlPUgbntwsFyKroNTdKkeHBerSBgbArSuXpZigFOaXextQpPsOhPIHOUAUFdnSMT"}
+cookies = {"hf-chat": hf_key, "token": token}
 
 def Rika(query):
         
