@@ -1,5 +1,8 @@
-email = "maousenpai48@gmail.com"
+email = ""
 
-hf_key = "cc5f1ad7-1c94-42f8-9a20-3fcd438128f6"
+hf_key = ""
 
-token = "VmnhTWlgpZrjwcrnbalvFuCwiwBfDfIpEutEVpUzrPUXkaapClPPhnScKasYZaFvnlPUgbntwsFyKroNTdKkeHBerSBgbArSuXpZigFOaXextQpPsOhPIHOUAUFdnSMT"
+token = ""
+
+#keep blank if you dont want to use rikav1 
+#if you want to then hey theses valuses from hugging chat

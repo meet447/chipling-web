@@ -97,7 +97,7 @@ def rikav1():
 
     return jsonify({'results': response})
 
-@app.route('/api/rikav2')
+@app.route('/api/rikav2', methods=['POST'])
 def rikav2():
     data = request.json
     
@@ -111,7 +111,7 @@ def rikav2():
     
     return jsonify({'results': response})
 
-@app.route('/api/rikadel')
+@app.route('/api/rikadel', methods=['POST'])
 def rikadel():
     
     data = request.json

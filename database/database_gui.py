@@ -11,7 +11,12 @@ def load_chats():
 
 def main(page: ft.Page):
     page.scroll = True
-    chats = load_chats()
+        
+    def refresh_data(e):
+        
+        update_data()
+        
+        page.update()
     
     def update_data():
         chats = load_chats()
@@ -53,12 +58,13 @@ def main(page: ft.Page):
             )
         )
         page.update()
+        
+    update_button = ft.ElevatedButton(ft.Text("Update Data"), on_click=refresh_data)
+    
+    page.add(update_button)
 
     Column = ft.Column(expand=True)
     page.add(Column)
-    
-    update_button = ft.ElevatedButton(ft.Text("Update Data"), on_click=update_data)
-    Column.controls.append(update_button)
 
     # Load the initial data
     update_data()
