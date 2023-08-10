@@ -24,8 +24,7 @@ def rikav1_api(query):
 def rikav2_api(query):
     
     data = Rikav2(query)
-    
-    return query
+    return data
 
 def rikadel_api(query):
     
