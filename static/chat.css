@@ -1,128 +1,188 @@
+:root {
+  --send-bg: #0B93F6;
+  --send-color: white;
+  --receive-bg: #E5E5EA;
+  --receive-text: black;
+  --page-background: white;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    color: #333;
-}
-
-/* Dark mode */
-body.dark-mode {
-    background-color: #333;
-    color: #f4f4f4;
-}
-
-.chat-container {
-    max-width: 1500px;
-    width: 90%;
-    margin: 20px auto;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    height: 700px;
-    overflow-y: auto;
-}
-
-.message-container {
-    display: flex;
-    gap: 10px;
-}
-
-.message {
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.user-message {
-    background-color: #77aaff;
-    color: #fff;
-    align-self: flex-end;
-}
-
-.bot-message {
-    background-color: #f1f0f0;
-    color: #333;
-    align-self: flex-start;
-}   
-
-.input-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-/* Adjusted input size */
-input[type="text"] {
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    background-color: #f1f0f0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    outline: none;
-}
-
-.enter-button {
-    padding: 10px 16px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #77aaff;
-    color: #fff;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 30px;
-}
-
-.chat-container::after {
-    content: "";
-    display: table;
-    clear: both;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: normal;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--page-background);
+  margin: 0;
+  overflow: hidden; /* Hide horizontal scrollbar */
+  min-height: 100vh; /* Ensure a minimum full viewport height */
 }
 
 .appbar {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: var(--send-bg);
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  position: fixed; /* Fixed position to stay at the top */
+  top: 0; /* Positioned at the top of the viewport */
+  width: 100%;
+  z-index: 1; /* Ensure it appears above the chat */
 }
 
-.appbar h2 {
-    margin: 0;
+.buttons {
+  display: flex;
+  gap: 10px;
 }
 
-.appbar button {
-    padding: 8px 16px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #fff;
-    color: #333;
+.dark-mode-container {
+  margin-left: auto;
 }
 
-/* Dark mode button */
-.dark-mode-button {
-    background-color: #1a1a1a;
-    color: #f4f4f4;
+.chat-container {
+  flex: 1; /* Expand to fill available space */
+  max-height: calc(100vh - 160px); /* Set maximum height to the viewport height minus app bar and input bar heights */
+  padding-top: 60px; /* Space for the fixed app bar */
+  padding-bottom: 100px; /* Space for the fixed input bar at the bottom */
+  margin-top: 60px; /* Add margin to prevent overlap with the app bar */
+  overflow-y: scroll; /* Enable vertical scrolling if chat overflows */
+  scroll-behavior: smooth; /* Add smooth scrolling behavior */
 }
 
-/* Hover effect for buttons */
-.appbar button:hover,
-.start-chatting-btn:hover,
-.enter-button:hover,
-.dark-mode-button:hover {
-    background-color: #e3e3e3;
+
+
+.input-container {
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed; /* Fixed position to stay at the bottom */
+  bottom: 0; /* Positioned at the bottom of the viewport */
+  width: 100%;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 25px;
+  margin-right: 10px;
+}
+
+button.enter-button {
+  background: var(--send-bg);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button.enter-button:hover {
+  background: #0A81D3;
+}
+
+.send,
+.receive {
+  max-width: 70%; /* Adjust the maximum width of chat bubbles */
+  word-wrap: break-word;
+  margin: 12px; /* Add margin to create spacing between chat bubbles */
+  line-height: 24px;
+  position: relative;
+  padding: 10px 20px;
+  border-radius: 25px;
+  clear: both; /* Clear floats to create separation */
+}
+
+.send:before,
+.receive:before,
+.send:after,
+.receive:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  height: 25px;
+}
+
+.send {
+  color: var(--send-color);
+  background: var(--send-bg);
+  align-self: flex-end;
+
+  &:before {
+    right: -7px;
+    width: 20px;
+    background-color: var(--send-bg);
+    border-bottom-left-radius: 16px 14px;
+  }
+
+  &:after {
+    right: -26px;
+    width: 26px;
+    background-color: var(--page-background);
+    border-bottom-left-radius: 10px;
+  }
+}
+
+.receive {
+  background: var(--receive-bg);
+  color: var(--receive-text);
+  align-self: flex-start;
+
+  &:before {
+    left: -7px;
+    width: 20px;
+    background-color: var(--receive-bg);
+    border-bottom-right-radius: 16px 14px;
+  }
+
+  &:after {
+    left: -26px;
+    width: 26px;
+    background-color: var(--page-background);
+    border-bottom-right-radius: 10px;
+  }
+}
+
+/* Additional styles for the input container and dark mode button */
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 25px;
+  margin-right: 10px;
+}
+
+button.enter-button {
+  background: var(--send-bg);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button.enter-button:hover {
+  background: #0A81D3;
+}
+
+/* Add a dark mode class to change colors for dark mode */
+.dark-mode {
+  --send-bg: #333;
+  --send-color: white;
+  --receive-bg: #555;
+  --receive-text: white;
+  --page-background: #222;
 }

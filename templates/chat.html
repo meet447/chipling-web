@@ -3,27 +3,24 @@
 <head>
     <title>Rika Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
-
-
 </head>
 <body>
     <div class="appbar">
         <h2>You are Chatting with {{id[0].name}}</h2>
-        <a href="/">
-            <button>Home</button>
-        </a>
-        <!-- Create button -->
-        <a href="/create">
-            <button>Create</button>
-        </a>
-        <!-- Dark mode button -->
-        <button id="darkModeButton" class="dark-mode-button">Dark Mode</button>
+        <div class="buttons">
+            <a href="/">
+                <button>Home</button>
+            </a>
+            <a href="/create">
+                <button>Create</button>
+            </a>
+        </div>
+        <div class="dark-mode-container">
+            <button id="darkModeButton" class="dark-mode-button">Dark Mode</button>
+        </div>
     </div>
     <div class="chat-container" id="chatContainer">
-        <!-- Chat messages will be displayed here -->
-        <div class="message-container">
-            <div class="message bot-message">{{id[0].chat}}</div>
-        </div>
+        <p class="receive">{{id[0].name}} :{{id[0].dialouge}}</p>
     </div>
     <div class="input-container">
         <input type="text" id="userInput" placeholder="Type your message..." onkeydown="sendMessage(event)">
@@ -32,14 +29,14 @@
 
     <script>
         let isDarkMode = false;
+        let messageHistory = []; // Store chat history
 
         function displayMessage(message, isUser) {
             const chatContainer = document.getElementById("chatContainer");
-            const messageDiv = document.createElement("div");
-            messageDiv.classList.add("message-container");
-            messageDiv.innerHTML = `<div class="message ${isUser ? 'user-message' : 'bot-message'}">${message}</div>`;
+            const messageDiv = document.createElement("p");
+            messageDiv.classList.add(isUser ? 'send' : 'receive');
+            messageDiv.textContent = message;
             chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
         function showLoading() {
@@ -47,9 +44,9 @@
         }
 
         function hideLoading() {
-            const loadingMessage = document.querySelector(".bot-message:last-child");
+            const loadingMessage = document.querySelector(".receive:last-child");
             if (loadingMessage && loadingMessage.textContent === "Char is typing...") {
-                loadingMessage.parentElement.remove();
+                loadingMessage.remove();
             }
         }
 
@@ -62,29 +59,30 @@
         function sendMessageButtonClick() {
             const userInput = document.getElementById("userInput");
             const message = userInput.value;
-            const url = window.location.href; // Get the current URL
+            displayMessage("You: " + message, true);
+            userInput.value = "";
 
-            // Extract the desired part from the URL
+            // Add the user's message to the chat history
+            messageHistory.push({ sender: "User", message });
+
+            // Send the user's message and message history to the server for processing
+            sendRequestToServer(message, messageHistory);
+        }
+
+        function sendRequestToServer(message, history) {
+            showLoading();
+
+            const url = window.location.href;
             const urlParts = url.split("/");
             const desiredPart = urlParts[urlParts.length - 1];
 
-            displayMessage("You: " + message, true);
-            userInput.value = message;
-
-            const data = {
-                text: message,
-                id: desiredPart,
-            };
-
-            showLoading();
-
-            // Send message to the backend and get the response
+            // Make an HTTP request to the server
             fetch("/get_response", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"  
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ message,id: desiredPart, history })
             })
             .then(response => response.json())
             .then(data => {
@@ -92,6 +90,9 @@
                 if ("response" in data) {
                     const botResponse = data.response;
                     displayMessage("Char: " + botResponse, false);
+
+                    // Add the bot's response to the chat history
+                    history.push({ sender: "Char", message: botResponse });
                 } else {
                     console.error("Error:", data.response);
                 }

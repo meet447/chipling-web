@@ -57,11 +57,21 @@ def create_backbone():
 @app.route('/get_response', methods=['POST'])
 def get_response():
     data = request.get_json()
-    user_message = data["text"]
+    user_message = data["message"]
     id = data["id"]
+    history = data["history"]
+    
+    formatted_history = ""
+    for message in history:
+        sender = message['sender']
+        msg = message['message'].replace('\n', '\\n')
+        formatted_history += f'{sender}:{msg}\\n'
+
+    respond_message = formatted_history
+    print(user_message)
         
     details = get_chat(id=id)
-        
+            
     name = details[0]["name"]
     desc = details[0]["long_desc"]
     scenario = details[0]["dialouge"]
@@ -70,7 +80,7 @@ def get_response():
     prompt = character_builder(name=name, description=desc, chat=chat, scenario=scenario)
 
     # Call your AI model here to generate the bot response
-    response = Rikav2(query=prompt + user_message + "\n{{char}}:")
+    response = Rikav2(query=prompt + respond_message + "\n{{char}}:")
     
     print(response)
 
