@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return redirect('/home')
+    return render_template("index.html")
 
 @app.route('/home')
 def home():
@@ -65,7 +65,7 @@ def get_response():
     for message in history:
         sender = message['sender']
         msg = message['message'].replace('\n', '\\n')
-        formatted_history += f'{sender}:{msg}\\n'
+        formatted_history += f'{{{{{sender}}}}}:{msg}\\n'
 
     respond_message = formatted_history
     print(user_message)

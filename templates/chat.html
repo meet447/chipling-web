@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Rika Chat</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
     <div class="appbar">
@@ -14,13 +15,19 @@
             <a href="/create">
                 <button>Create</button>
             </a>
+            <a href="/create">
+                <button>Api</button>
+            </a>
+            <a href="/create">
+                <button>Help</button>
+            </a>
         </div>
         <div class="dark-mode-container">
             <button id="darkModeButton" class="dark-mode-button">Dark Mode</button>
         </div>
     </div>
     <div class="chat-container" id="chatContainer">
-        <p class="receive">{{id[0].name}} :{{id[0].dialouge}}</p>
+        <p class="receive">{{id[0].name}} :{{id[0].chat}}</p>
     </div>
     <div class="input-container">
         <input type="text" id="userInput" placeholder="Type your message..." onkeydown="sendMessage(event)">

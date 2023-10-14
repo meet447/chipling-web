@@ -2,10 +2,22 @@
 <html>
 <head>
     <title>Create Your Charc</title>
-    <link rel="stylesheet" href="static/create.css">
+    <link rel="stylesheet" href="static/css/create.css">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="stylesheet" href="static/css/home.css">
 </head>
 <body>
-    <h1>Create Char</h1>
+    <header class="app-bar">
+        <h1 class="logo">Chipling Ai Web</h1>
+        <input type="text" placeholder="Search...">
+        <a href="/create">
+            <button>Create</button>
+        </a>
+        <a href="/home">
+            <button>Home</button>
+        </a>
+    </header>
+    <h1>Create Character</h1>
     <form action="/create_chat" method="post">
         <label for="user">User:</label>
         <input type="text" id="user" name="user" required>
@@ -25,10 +37,10 @@
         <label for="origin">Origin:</label>
         <input type="text" id="origin" name="origin" required value="">
 
-        <label for="chat">Chat: (add as many dialouge you would like just keep the last dialouge to be {user}: and empty)</label>
+        <label for="chat">Chat: </label>
         <textarea id="chat" name="chat" rows="4" required>{char}: *you enter her office, she looks at you*
 "Who are you?
-{user}:</textarea>
+</textarea>
 
         <label for="image">Image:(pre hosted image only sad lyf)</label>
         <input type="text" id="image" name="image" required>

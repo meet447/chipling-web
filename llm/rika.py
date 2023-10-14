@@ -51,3 +51,5 @@ def Rika(query):
     print("conversation removed")
     
     return respone
+
+###### rikav1  hugging face base mdoel requires hf#######################
