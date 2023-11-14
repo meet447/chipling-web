@@ -10,10 +10,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # Adjust the timeout as needed
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9, 3.10]
 
     steps:
     - uses: actions/checkout@v3
@@ -31,9 +32,9 @@ jobs:
         export FLASK_ENV=testing
     - name: Run App
       run: |
-        flask run --host=0.0.0.0 --port=5000 &
-        sleep 5  # Wait for the server to start
-        curl -I http://127.0.0.1:5000  # Optional: Send a request to check if the server is running
+        nohup flask run --host=0.0.0.0 --port=5000 > flask_output.log 2>&1 &
+        sleep 5
+        curl -I http://127.0.0.1:5000
     - name: Run Tests
       run: |
         # Add commands to run your tests here
