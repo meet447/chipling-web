@@ -10,7 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    timeout-minutes: 11  # Adjust the timeout as needed
+    timeout-minutes: 10  # Adjust the timeout as needed
     strategy:
       max-parallel: 4
       matrix:
@@ -30,19 +30,15 @@ jobs:
       run: |
         export FLASK_APP=app.py  # Assuming app.py is the entry point for your Flask app
         export FLASK_ENV=testing
-    - name: Install ngrok
+    - name: Install localtunnel
       run: |
-        wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-        unzip ngrok-stable-linux-amd64.zip
+        npm install -g localtunnel
     - name: Run App
       run: |
         nohup flask run --host=0.0.0.0 --port=5000 > flask_output.log 2>&1 &
         sleep 5
-        curl -I http://127.0.0.1:5000
-    - name: Run ngrok
-      run: |
-        ./ngrok http 5000
+        lt --port 5000
     - name: Test App with HTTPie
       run: |
         sleep 5  # Wait for the server to fully start
-        http --check-status http://127.0.0.1:5000
+        http --check-status $(cat flask_output.log | grep -o "your url" | tail -1)
