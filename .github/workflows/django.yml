@@ -29,7 +29,11 @@ jobs:
       run: |
         export FLASK_APP=app.py  # Assuming app.py is the entry point for your Flask app
         export FLASK_ENV=testing
-        flask --version  # Optional: Print Flask version for verification
     - name: Run App
       run: |
-        flask run --host=0.0.0.0 --port=5000  # Adjust the command based on your app configuration
+        flask run --host=0.0.0.0 --port=5000 &
+        sleep 5  # Wait for the server to start
+        curl -I http://127.0.0.1:5000  # Optional: Send a request to check if the server is running
+    - name: Run Tests
+      run: |
+        # Add commands to run your tests here
