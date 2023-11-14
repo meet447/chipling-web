@@ -3,9 +3,12 @@ from service.chat import create_chat, load_chats, get_chat
 import uuid, requests, json
 from llm.rika import Rika 
 from llm.Rikav2 import Rikav2
+from llm.rikagpt import rika_chat_gpt
 from service.character import character_builder
 from api.backend import homepage_api,rikadel_api, rikav1_api,rikav2_api
 from api.service import process_prompt
+from api.backend import rika_gpt
+from config import engine
 
 app = Flask(__name__)
 
@@ -80,8 +83,11 @@ def get_response():
     prompt = character_builder(name=name, description=desc, chat=chat, scenario=scenario)
 
     # Call your AI model here to generate the bot response
-    response = Rikav2(query=prompt + respond_message + "\n{{char}}:")
-    
+    if engine == "gpt":
+        response = rika_chat_gpt(query=prompt + respond_message + "\n{{char}}:")
+    else:
+        response = Rikav2(query=prompt + respond_message + "\n{{char}}:")
+        
     print(response)
 
     return json.dumps({"response": response})
@@ -118,6 +124,20 @@ def rikav2():
     prompt = process_prompt(id=id)
     
     response = rikav2_api(query=prompt + text + "\n{{char}}:")
+    
+    return jsonify({'results': response})
+
+@app.route('/api/rika-gpt', methods=['POST'])
+def rika_gpt():
+    data = request.json
+    
+    text = data['text']
+    
+    id = data['id']
+    
+    prompt = process_prompt(id=id)
+    
+    response = rika_gpt(query=prompt + text + "\n{{char}}:")
     
     return jsonify({'results': response})
 

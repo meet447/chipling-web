@@ -4,6 +4,7 @@ from service.character import search_character
 from llm.rika import Rika
 from llm.Rikav2 import Rikav2
 from llm.rikadel import rikadel
+from llm.rikagpt import rika_chat_gpt
 
 def homepage_api():
     
@@ -29,5 +30,11 @@ def rikav2_api(query):
 def rikadel_api(query):
     
     data = rikadel(query)
+    
+    return data
+
+def rika_gpt(query):
+    
+    data = rika_chat_gpt(query)
     
     return data
