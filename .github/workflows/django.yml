@@ -35,6 +35,10 @@ jobs:
         nohup flask run --host=0.0.0.0 --port=5000 > flask_output.log 2>&1 &
         sleep 5
         curl -I http://127.0.0.1:5000
-    - name: Run Tests
+    - name: Run ngrok
       run: |
-        # Add commands to run your tests here
+        ngrok http 5000
+    - name: Test App with HTTPie
+      run: |
+        sleep 5  # Wait for the server to fully start
+        http --check-status http://127.0.0.1:5000
